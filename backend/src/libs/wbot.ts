@@ -7,13 +7,13 @@ import makeWASocket, {
   AuthenticationCreds,
   makeInMemoryStore,
   isJidBroadcast
-} from "@adiwajshing/baileys";
-import makeWALegacySocket from "@adiwajshing/baileys";
+} from "@whiskeysockets/baileys";
+import makeWALegacySocket from "@whiskeysockets/baileys";
 import P from "pino";
 
 import Whatsapp from "../models/Whatsapp";
 import { logger } from "../utils/logger";
-import MAIN_LOGGER from "@adiwajshing/baileys/lib/Utils/logger";
+import MAIN_LOGGER from "@whiskeysockets/baileys/lib/Utils/logger";
 import authState from "../helpers/authState";
 import { Boom } from "@hapi/boom";
 import AppError from "../errors/AppError";
