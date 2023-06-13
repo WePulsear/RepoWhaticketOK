@@ -1,5 +1,5 @@
-import { proto } from "@adiwajshing/baileys";
-import WALegacySocket from "@adiwajshing/baileys"
+import { proto } from "@whiskeysockets/baileyss";
+import WALegacySocket from "@whiskeysockets/baileys"
 import Ticket from "../models/Ticket";
 import GetTicketWbot from "./GetTicketWbot";
 import AppError from "../errors/AppError";
