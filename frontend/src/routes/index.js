@@ -31,6 +31,7 @@ import CampaignReport from "../pages/CampaignReport";
 import Annoucements from "../pages/Annoucements";
 import Chat from "../pages/Chat";
 import Subscription from "../pages/Subscription/";
+import ToDoList from "../pages/ToDoList/";
 
 
 const Routes = () => {
@@ -70,6 +71,12 @@ const Routes = () => {
                   exact
                   path="/quick-messages"
                   component={QuickMessages}
+                  isPrivate
+                />
+                <Route
+                  exact
+                  path="/todolist"
+                  component={ToDoList}
                   isPrivate
                 />
                 <Route
