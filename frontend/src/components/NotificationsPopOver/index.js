@@ -199,7 +199,7 @@ const NotificationsPopOver = () => {
         variant="contained"
 
       >
-          <ChatIcon />
+          <ChatIcon style={{ color: "white" }} />
         {/* <Badge badgeContent={notifications.length} color="secondary">
         </Badge> */}
       </IconButton>
