@@ -179,13 +179,23 @@ const TicketsList = ({
     queueIds: JSON.stringify(selectedQueueIds),
   });
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!status && !searchParam) return;
     dispatch({
       type: "LOAD_TICKETS",
       payload: tickets,
     });
-  }, [tickets, status, searchParam]);
+  }, [tickets, status, searchParam]);  */
+  useEffect(() => {
+    if (!status && !searchParam) return;
+    const queueIds = queues.map((q) => q.id);
+    const filteredTickets = tickets.filter((t) => queueIds.indexOf(t.queueId) > -1);
+    if (profile === "user") {
+      dispatch({ type: "LOAD_TICKETS", payload: filteredTickets });
+    } else {
+      dispatch({ type: "LOAD_TICKETS", payload: tickets });
+    }
+  }, [tickets, status, searchParam, queues, profile]);
 
   useEffect(() => {
     const companyId = localStorage.getItem("companyId");
