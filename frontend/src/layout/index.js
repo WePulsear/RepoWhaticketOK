@@ -259,7 +259,7 @@ const LoggedInLayout = ({ children }) => {
               drawerOpen && classes.menuButtonHidden
             )}
           >
-            <MenuIcon />
+            <MenuIcon style={{ color: "white" }} />
           </IconButton>
           <Typography
             component="h8"
@@ -291,7 +291,7 @@ const LoggedInLayout = ({ children }) => {
               variant="contained"
 
             >
-              <AccountCircle />
+              <AccountCircle style={{ color: "white" }} />
             </IconButton>
             <Menu
               id="menu-appbar"
