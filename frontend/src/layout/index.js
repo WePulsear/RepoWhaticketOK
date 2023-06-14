@@ -29,7 +29,7 @@ import { i18n } from "../translate/i18n";
 import toastError from "../errors/toastError";
 import AnnouncementsPopover from "../components/AnnouncementsPopover";
 
-import logo from "../assets/zapsimples.png";
+import logo from "../assets/logoPainelOption.png";
 import { socketConnection } from "../services/socket";
 import ChatPopover from "../pages/Chat/ChatPopover";
 
@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
 
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
-    color: "#FFFFFF",
-    background: theme.barraSuperior.primary.main,
+    color: "white",
+    background: "linear-gradient(to right, #06345A, #154D7B, #215A89)"
   },
   toolbarIcon: {
     display: "flex",
