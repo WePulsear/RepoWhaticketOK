@@ -83,41 +83,28 @@ const ContactsExport = (props) => {
 
     useEffect(() => {
         if (selecteds.length === 0 && queueSelected.length === 0) {
-            setPlanilha(planilha)
+          setPlanilha(tickets); // Define a planilha como todos os tickets
         } else {
-            // Filtra tickets por tags e setores
-            let tempTickets = tickets.filter(ticket => filterTickets(ticket, selecteds, 'tags'))
-            tempTickets = tempTickets.filter(ticket => filterTickets(ticket, queueSelected, 'queue'))
-
-            /* 
-            Mapeia cada ticket e concatena com a variavel
-            "finalTempTickets" e pula de linha para formar uma tabela
-            */
-            let finalTempTickets = ""
-            for(let contact of tempTickets){
-                const t = contact
-                finalTempTickets +=  
-                    `${t.contact.name},${t.contact.number},${t.contact.email},${t.tags.map(tag => tag.name)},${t.queue !== null? (t.queue.map(queue => queue.name)) : ""}\n`
-            }
-            tempTickets = "Nome, Numero, E-mail, Tags, Setores\n" + finalTempTickets
-            setPlanilha(tempTickets)
+          const filteredTickets = tickets.filter(ticket =>
+            filterTickets(ticket, selecteds, 'tags') &&
+            filterTickets(ticket, queueSelected, 'queue')
+          );
+      
+          const formattedPlanilha = "Nome, Numero, E-mail, Tags, Setores\n" +
+            filteredTickets.map(ticket =>
+              `${ticket.contact.name},${ticket.contact.number},${ticket.contact.email || ''},${ticket.tags.map(tag => tag.name)},${ticket.queue !== null ? (ticket.queue.map(queue => queue.name)) : ''}`
+            ).join('\n');
+      
+          setPlanilha(formattedPlanilha); // Define a planilha filtrada
         }
-    }, [selecteds, queueSelected])
+      }, [selecteds, queueSelected, tickets]);      
 
     //Filtra tiquet por tags ou queues
     const filterTickets = (ticket, filter, typeFilter) => {
-        let aprovado = true
-
-        for (let tag of filter) {
-            if ((ticket[typeFilter].filter(obgTag => obgTag.name === tag.name)).length === 0) {
-                aprovado = false
-            }
-        }
-
-        return aprovado
-    }
-
-
+        return filter.some(filterItem =>
+          ticket[typeFilter].some(item => item.name === filterItem.name)
+        );
+      };      
     const loadTickets = async () => {
         try {
             const { data } = await api.get(`/tickets`);
@@ -188,8 +175,12 @@ const ContactsExport = (props) => {
             const { data } = await api.get(`/contacts`);
             const apiData = data.contacts
             await setPlanilha(
-                apiData.map((u) => ([`Nome: ${u.name}, Numero: ${u.number}, E-mail: ${u.email || ""}`]))
-            )
+                apiData.map((u) => ({
+                  Nome: u.name,
+                  Numero: u.number,
+                  "E-mail": u.email || ""
+                }))
+              );              
 
         } catch (err) {
             toastError(err);
@@ -283,7 +274,7 @@ const ContactsExport = (props) => {
 
                         <CSVLink
                             separator=";"
-                            filename={'pressticket-contacts.csv'}
+                            filename={'contatos-onnzap.csv'}
                             data={planilha}
                             className={classes.btnWrapper}>
                             <Button
