@@ -129,11 +129,11 @@ const useStyles = makeStyles((theme) => ({
   },
   Radiusdot: {
     "& .MuiBadge-badge": {
-      borderRadius: 6,
+      borderRadius: 2,
       position: "inherit",
       height: 16,
       margin: 2,
-      padding: 6
+      padding: 3
     },
     "& .MuiBadge-anchorOriginTopRightRectangle": {
       transform: "scale(1) translate(0%, -40%)",
@@ -225,12 +225,12 @@ const TicketListItemCustom = ({ ticket }) => {
               className={classes.Radiusdot}
               badgeContent={`${whatsAppName}`}
               style={{
-                backgroundColor: "#003d91",
+                backgroundColor: "#7d79f2",
                 height: 16,
                 padding: 4,
                 marginRight: 2,
                 position: "inherit",
-                borderRadius: 6,
+                borderRadius: 2,
                 color: "white",
                 top: -6
               }}
@@ -240,24 +240,23 @@ const TicketListItemCustom = ({ ticket }) => {
             <Badge
               className={classes.Radiusdot}
               style={{
-                backgroundColor: ticket.queue?.color || "#000000",
+                backgroundColor: ticket.queue?.color || "#7C7C7C",
                 height: 16,
                 padding: 4,
                 position: "inherit",
-                borderRadius: 6,
+                borderRadius: 2,
                 color: "white",
-                top: -6,
-                marginRight: 5,
+                top: -6
               }}
               badgeContent={ticket.queue?.name || "Sem fila"}
             //color="primary"
             />
           )}
-          {ticket.status === "open" && (
+          {ticket.status === "open" && profile === "admin" && (
             <Tooltip title="Fechar Conversa">
               <ClearOutlinedIcon
                 onClick={() => handleCloseTicket(ticket.id)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: red[700],
                   cursor: "pointer",
@@ -270,7 +269,7 @@ const TicketListItemCustom = ({ ticket }) => {
             <Tooltip title="Espiar Conversa">
               <VisibilityIcon
                 onClick={() => setOpenTicketMessageDialog(true)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: blue[700],
                   cursor: "pointer",
@@ -282,7 +281,7 @@ const TicketListItemCustom = ({ ticket }) => {
           {ticket.chatbot && (
             <Tooltip title="Chatbot">
               <AndroidIcon
-                fontSize="medium"
+                fontSize="small"
                 style={{ color: grey[700], marginRight: 5 }}
               />
             </Tooltip>
@@ -298,24 +297,23 @@ const TicketListItemCustom = ({ ticket }) => {
               className={classes.Radiusdot}
               style={{
                 //backgroundColor: ticket.queue?.color,
-                backgroundColor: ticket.queue?.color || "#000000",
+                backgroundColor: ticket.queue?.color || "#7C7C7C",
                 height: 16,
                 padding: 4,
                 position: "inherit",
-                borderRadius: 6,
+                borderRadius: 2,
                 color: "white",
-                top: -6,
-                marginRight: 5,
+                top: -6
               }}
               badgeContent={ticket.queue?.name || "Sem fila"}
             //color=
             />
           )}
-          {ticket.status === "pending" && (
+          {ticket.status === "pending" && profile === "admin" &&(
             <Tooltip title="Fechar Conversa">
               <ClearOutlinedIcon
                 onClick={() => handleCloseTicket(ticket.id)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: red[700],
                   cursor: "pointer",
@@ -327,16 +325,16 @@ const TicketListItemCustom = ({ ticket }) => {
           {ticket.chatbot && (
             <Tooltip title="Chatbot">
               <AndroidIcon
-                fontSize="medium"
+                fontSize="small"
                 style={{ color: grey[700], marginRight: 5 }}
               />
             </Tooltip>
           )}
-          {ticket.status === "open" && (
+          {ticket.status === "open" && profile === "admin" && (
             <Tooltip title="Fechar Conversa">
               <ClearOutlinedIcon
                 onClick={() => handleCloseTicket(ticket.id)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: red[700],
                   cursor: "pointer",
@@ -349,7 +347,7 @@ const TicketListItemCustom = ({ ticket }) => {
             <Tooltip title="Espiar Conversa">
               <VisibilityIcon
                 onClick={() => setOpenTicketMessageDialog(true)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: blue[700],
                   cursor: "pointer",
@@ -360,15 +358,33 @@ const TicketListItemCustom = ({ ticket }) => {
           )}
           {ticket.status === "pending" && (
             <Tooltip title="Aceitar Conversa">
-              <DoneIcon
+              <ButtonWithSpinner
+						color="primary"
+            style={{ marginLeft: 10 }}
+            /*style={{
+              color: "white",
+              //backgroundColor: green[700],
+              backgroundColor: 'primary',
+              cursor: "pointer",
+              marginLeft: 10,
+            }} */
+						variant="contained"
+						//className={classes.acceptButton}
+						size="small"
+						loading={loading}
+						onClick={e => handleAcepptTicket(ticket.id)}
+					>
+            Aceitar
+					</ButtonWithSpinner>
+            {/* <DoneIcon
                 onClick={() => handleAcepptTicket(ticket.id)}
-                fontSize="medium"
+                fontSize="small"
                 style={{
                   color: green[700],
                   cursor: "pointer",
                   marginRight: 5,
                 }}
-              />
+              /> */}
             </Tooltip>
           )}
         </>
@@ -401,7 +417,7 @@ const TicketListItemCustom = ({ ticket }) => {
           title={ticket.queue?.name || "Sem fila"}
         >
           <span
-            style={{ backgroundColor: ticket.queue?.color || "#000000", marginRight: 5, borderRadius: 6, }}
+            style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }}
             className={classes.ticketQueueColor}
           ></span>
         </Tooltip>
@@ -434,7 +450,7 @@ const TicketListItemCustom = ({ ticket }) => {
                 variant="body2"
                 color="textSecondary"
               > {ticket.lastMessage.includes('data:image/png;base64') ? <MarkdownWrapper> Localização</MarkdownWrapper> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>}
-                {ticket.lastMessage === "" ? <br /> : <MarkdownWrapper>{}</MarkdownWrapper>}
+                {/* {ticket.lastMessage === "" ? <br /> : <MarkdownWrapper>{ticket.lastMessage}</MarkdownWrapper>} */}
               </Typography>
             </span>
 
@@ -444,14 +460,14 @@ const TicketListItemCustom = ({ ticket }) => {
           {ticket.status === "closed" && (
             <Badge
               className={classes.Radiusdot}
-              badgeContent={"RESOLVIDO"}
+              badgeContent={"FECHADO"}
               //color="primary"
               style={{
                 marginRight: 5,
-                backgroundColor: "#FF5757",
+                backgroundColor: ticket.queue?.color || "#ff0000",
                 height: 16,
                 padding: 4,
-                borderRadius: 6,
+                borderRadius: 2,
                 color: "white",
                 top: -13
               }}
