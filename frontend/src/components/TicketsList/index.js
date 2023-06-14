@@ -186,6 +186,7 @@ const TicketsList = ({
       payload: tickets,
     });
   }, [tickets, status, searchParam]);  */
+  //Não Mostrar ticket sem fila
   useEffect(() => {
     if (!status && !searchParam) return;
     const queueIds = queues.map((q) => q.id);
