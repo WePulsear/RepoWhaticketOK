@@ -25,6 +25,7 @@ import api from "../../services/api";
 import TableRowSkeleton from "../../components/TableRowSkeleton";
 import ContactModal from "../../components/ContactModal";
 import ConfirmationModal from "../../components/ConfirmationModal/";
+import ContactsExport from "../../components/ContactsExport";
 
 import { i18n } from "../../translate/i18n";
 import MainHeader from "../../components/MainHeader";
@@ -88,6 +89,26 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "scroll",
     ...theme.scrollbarStyles,
   },
+  exporte: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50 %, -50 %)",
+    width: "400px",
+    backgroundColor: "white",
+    padding: "20px",
+    boxShadow: "0 0 20px rgba(0, 0, 0, 0.2)",
+    zIndex: 0,
+    width: "235px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  botoesResponsivos: {
+    display: "flex",
+    flexWrap: "wrap",
+  }
+
 }));
 
 const Contacts = () => {
@@ -102,6 +123,7 @@ const Contacts = () => {
   const [contacts, dispatch] = useReducer(reducer, []);
   const [selectedContactId, setSelectedContactId] = useState(null);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [contactExportOpen, setContactExportOpen] = useState(false);
   const [newTicketModalOpen, setNewTicketModalOpen] = useState(false);
   const [contactTicket, setContactTicket] = useState({});
   const [deletingContact, setDeletingContact] = useState(null);
@@ -166,6 +188,27 @@ const Contacts = () => {
     setContactModalOpen(false);
   };
 
+
+
+  /* Exportar */ /*
+  const handleOpenContactExport = () => {
+    if(!contactExportOpen){
+      setContactExportOpen(true);
+      useStyles.apply("ContactsExport", {
+        visibility: "visible"
+      })
+    }else{
+      setContactExportOpen(false);
+      useStyles.apply("ContactsExport", {
+        visibility: "hidden"
+      })
+    }
+    
+  };*/
+
+
+
+
   // const handleSaveTicket = async contactId => {
   // 	if (!contactId) return;
   // 	setLoading(true);
@@ -226,9 +269,38 @@ const Contacts = () => {
       loadMore();
     }
   };
+  const { profile } = user;
+
+  /* POPUP */
+  const [showPopup, setShowPopup] = useState(false);
+  const [queue, setQueue] = useState("");
+
+  const handleFilter = (event) => {
+    event.preventDefault();
+    // Filtra os tickets por fila
+  };
+
+  const handleQueueChange = (event) => {
+    setQueue(event.target.value);
+  };
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   return (
     <MainContainer className={classes.mainContainer}>
+      {showPopup && (
+        <ContactsExport
+          className={classes.exporte}
+          handleClose={togglePopup}
+          handleFilter={handleFilter}
+          handleQueueChange={handleQueueChange}
+        />
+      )}
+
+
+
       <NewTicketModal
         modalOpen={newTicketModalOpen}
         initialContact={contactTicket}
@@ -236,6 +308,7 @@ const Contacts = () => {
           handleCloseOrOpenTicket(ticket);
         }}
       />
+
       <ContactModal
         open={contactModalOpen}
         onClose={handleCloseContactModal}
@@ -245,9 +318,8 @@ const Contacts = () => {
       <ConfirmationModal
         title={
           deletingContact
-            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${
-                deletingContact.name
-              }?`
+            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${deletingContact.name
+            }?`
             : `${i18n.t("contacts.confirmationModal.importTitlte")}`
         }
         open={confirmOpen}
@@ -262,7 +334,7 @@ const Contacts = () => {
           ? `${i18n.t("contacts.confirmationModal.deleteMessage")}`
           : `${i18n.t("contacts.confirmationModal.importMessage")}`}
       </ConfirmationModal>
-      <MainHeader>
+      <MainHeader className={classes.botoesResponsivos}>
         <Title>{i18n.t("contacts.title")}</Title>
         <MainHeaderButtonsWrapper>
           <TextField
@@ -278,6 +350,10 @@ const Contacts = () => {
               ),
             }}
           />
+
+
+          {/* import */}
+          {profile === "admin" && (
           <Button
             variant="contained"
             color="primary"
@@ -285,6 +361,26 @@ const Contacts = () => {
           >
             {i18n.t("contacts.buttons.import")}
           </Button>
+          )}
+          {/* Export */}
+
+          {/* <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => setConfirmOpen(true)}
+          >
+           } {i18n.t("contacts.buttons.export")
+          </Button> */}
+          {profile === "admin" && (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={togglePopup}
+          >
+            EXPORTAR CONTATOS
+          </Button>
+          )}
+
           <Button
             variant="contained"
             color="primary"
@@ -308,9 +404,6 @@ const Contacts = () => {
                 {i18n.t("contacts.table.whatsapp")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("contacts.table.email")}
-              </TableCell>
-              <TableCell align="center">
                 {i18n.t("contacts.table.actions")}
               </TableCell>
             </TableRow>
@@ -324,7 +417,6 @@ const Contacts = () => {
                   </TableCell>
                   <TableCell>{contact.name}</TableCell>
                   <TableCell align="center">{contact.number}</TableCell>
-                  <TableCell align="center">{contact.email}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
