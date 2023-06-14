@@ -316,11 +316,13 @@ const TicketsManagerTabs = () => {
         </Paper>
       </TabPanel>
       <TabPanel value={tab} name="closed" className={classes.ticketsWrapper}>
-        <TicketsList
+              <TicketsList
           status="closed"
-          showAll={true}
+          showAll={profile === "admin"}
           selectedQueueIds={selectedQueueIds}
+          users={selectedUsers}
         />
+        
       </TabPanel>
       <TabPanel value={tab} name="search" className={classes.ticketsWrapper}>
         <TagsFilter onFiltered={handleSelectedTags} />
@@ -329,7 +331,7 @@ const TicketsManagerTabs = () => {
         )}
         <TicketsList
           searchParam={searchParam}
-          showAll={true}
+          showAll={user?.name && profile === "admin"}
           tags={selectedTags}
           users={selectedUsers}
           selectedQueueIds={selectedQueueIds}
