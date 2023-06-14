@@ -30,6 +30,7 @@ import { i18n } from "../../translate/i18n";
 import { openApi } from "../../services/api";
 import toastError from "../../errors/toastError";
 import moment from "moment";
+import logo from "../../assets/logoLoginOption.png";
 // const Copyright = () => {
 // 	return (
 // 		<Typography variant="body2" color="textSecondary" align="center">
@@ -117,9 +118,7 @@ const SignUp = () => {
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon />
-				</Avatar>
+			<img style={{ margin: "0 auto", height: "80px", width: "60%" }} src={logo} alt="Whats" />
 				<Typography component="h1" variant="h5">
 					{i18n.t("signup.title")}
 				</Typography>
